@@ -189,7 +189,7 @@ for epoch in range(EPOCHS):
      save_images(cnt, fixed_noise)
      cnt += 1
  
-     print(f”{epoch} epoch, Discriminator accuracy: {100*  discriminator_metric[1]}, Generator accuracy: {100 * generator_metric[1]}”)
+     print(f"{epoch} epoch, Discriminator accuracy: {100*  discriminator_metric[1]}, Generator accuracy: {100 * generator_metric[1]}")
 
 discriminator_metric_real = discriminator.train_on_batch(x_real, y_real)
 discriminator_metric_generated = discriminator.train_on_batch(
