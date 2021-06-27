@@ -201,4 +201,4 @@ if epoch % SAVE_FREQ == 0:
  save_images(cnt, fixed_noise)
  cnt += 1
  
- print(f”{epoch} epoch, Discriminator accuracy: {100* discriminator_metric[1]}, Generator accuracy: {100 * generator_metric[1]}”)
+ print(f"{epoch} epoch, Discriminator accuracy: {100* discriminator_metric[1]}, Generator accuracy: {100 * generator_metric[1]}")
