@@ -116,8 +116,7 @@ def save_images(cnt, noise):
 image_shape = (IMAGE_SIZE, IMAGE_SIZE, IMAGE_CHANNELS)
 optimizer = Adam(1.5e-4, 0.5)
 discriminator = build_discriminator(image_shape)
-discriminator.compile(loss="binary_crossentropy",
-optimizer=optimizer, metrics=["accuracy"])
+discriminator.compile(loss="binary_crossentropy",optimizer=optimizer, metrics=["accuracy"])
 generator = build_generator(NOISE_SIZE, IMAGE_CHANNELS)
 random_input = Input(shape=(NOISE_SIZE,))
 generated_image = generator(random_input)
@@ -131,74 +130,20 @@ y_fake = np.zeros((BATCH_SIZE, 1))
 fixed_noise = np.random.normal(0, 1, (PREVIEW_ROWS * PREVIEW_COLS, NOISE_SIZE))
 cnt = 1
 for epoch in range(EPOCHS):
- idx = np.random.randint(0, training_data.shape[0], BATCH_SIZE)
- x_real = training_data[idx]
+	idx = np.random.randint(0, training_data.shape[0], BATCH_SIZE)
+	x_real = training_data[idx]
  
- noise= np.random.normal(0, 1, (BATCH_SIZE, NOISE_SIZE))
- x_fake = generator.predict(noise)
+	noise= np.random.normal(0, 1, (BATCH_SIZE, NOISE_SIZE))
+	x_fake = generator.predict(noise)
  
- discriminator_metric_real = discriminator.train_on_batch(x_real, y_real)
-discriminator_metric_generated = discriminator.train_on_batch(
- x_fake, y_fake)
+	discriminator_metric_real = discriminator.train_on_batch(x_real, y_real)
+	discriminator_metric_generated = discriminator.train_on_batch(x_fake, y_fake)
  
-discriminator_metric = 0.5 * np.add(discriminator_metric_real, discriminator_metric_generated)
-generator_metric = combined.train_on_batch(noise, y_real)
-if epoch % SAVE_FREQ == 0:
-   save_images(cnt, fixed_noise)
-   cnt += 1
+	discriminator_metric = 0.5 * np.add(discriminator_metric_real, discriminator_metric_generated)
+	generator_metric = combined.train_on_batch(noise, y_real)
+	if epoch % SAVE_FREQ == 0:
+   		save_images(cnt, fixed_noise)
+   		cnt += 1
  
-   print(f"{epoch} epoch, Discriminator accuracy: {100*  discriminator_metric[1]}, Generator accuracy: {100 * generator_metric[1]}")
-    
+   		print(f"{epoch} epoch, Discriminator accuracy: {100*  discriminator_metric[1]}, Generator accuracy: {100 * generator_metric[1]}")
 
-image_shape = (IMAGE_SIZE, IMAGE_SIZE, IMAGE_CHANNELS)
-optimizer = Adam(1.5e-4, 0.5)
-discriminator = build_discriminator(image_shape)
-discriminator.compile(loss="binary_crossentropy",
-optimizer=optimizer, metrics=["accuracy"])
-
-generator = build_generator(NOISE_SIZE, IMAGE_CHANNELS)
-random_input = Input(shape=(NOISE_SIZE,))
-generated_image = generator(random_input),
-
-discriminator.trainable = False
-validity = discriminator(generated_image)
-combined = Model(random_input, validity)
-combined.compile(loss="binary_crossentropy",
-optimizer=optimizer, metrics=["accuracy"])
-
-y_real = np.ones((BATCH_SIZE, 1))
-y_fake = np.zeros((BATCH_SIZE, 1))
-fixed_noise = np.random.normal(0, 1, (PREVIEW_ROWS * PREVIEW_COLS, NOISE_SIZE))
-
-cnt = 1
-for epoch in range(EPOCHS):
-  idx = np.random.randint(0, training_data.shape[0], BATCH_SIZE)
-  x_real = training_data[idx]
- 
-  noise= np.random.normal(0, 1, (BATCH_SIZE, NOISE_SIZE))
-  x_fake = generator.predict(noise)
- 
-  discriminator_metric_real = discriminator.train_on_batch(x_real, y_real)
-  discriminator_metric_generated = discriminator.train_on_batch(
- x_fake, y_fake)
- 
-  discriminator_metric = 0.5 * np.add(discriminator_metric_real,   discriminator_metric_generated)
-
-  generator_metric = combined.train_on_batch(noisse, y_real)
-  if epoch % SAVE_FREQ == 0:
-     save_images(cnt, fixed_noise)
-     cnt += 1
- 
-     print(f"{epoch} epoch, Discriminator accuracy: {100*  discriminator_metric[1]}, Generator accuracy: {100 * generator_metric[1]}")
-
-discriminator_metric_real = discriminator.train_on_batch(x_real, y_real)
-discriminator_metric_generated = discriminator.train_on_batch(
- x_fake, y_fake)
-
-discriminator_metric = 0.5 * np.add(discriminator_metric_real, discriminator_metric_generated)
-
-if epoch % SAVE_FREQ == 0:
- save_images(cnt, fixed_noise)
- cnt += 1
- 
- print(f"{epoch} epoch, Discriminator accuracy: {100* discriminator_metric[1]}, Generator accuracy: {100 * generator_metric[1]}")
