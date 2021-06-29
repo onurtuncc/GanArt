@@ -79,10 +79,10 @@ def build_generator(noise_size, channels):
     model.add(BatchNormalization(momentum=0.8))
     model.add(Activation('relu'))
     for i in range(GENERATE_RES):
-         model.add(UpSampling2D())
-         model.add(Conv2D(256, kernel_size=3, padding='same'))
-         model.add(BatchNormalization(momentum=0.8))
-         model.add(Activation('relu'))
+        model.add(UpSampling2D())
+        model.add(Conv2D(256, kernel_size=3, padding='same'))
+        model.add(BatchNormalization(momentum=0.8))
+        model.add(Activation('relu'))
     model.summary()
     model.add(Conv2D(channels, kernel_size=3, padding='same'))
     model.add(Activation('tanh'))
@@ -93,9 +93,7 @@ def build_generator(noise_size, channels):
 
 #Helper function to save the image after some iteration.
 def save_images(cnt, noise):
-    image_array = np.full((
-        PREVIEW_MARGIN + (PREVIEW_ROWS * (IMAGE_SIZE + PREVIEW_MARGIN)),
-        PREVIEW_MARGIN + (PREVIEW_COLS * (IMAGE_SIZE + PREVIEW_MARGIN)), 3),255, dtype=np.uint8)
+    image_array = np.full((PREVIEW_MARGIN + (PREVIEW_ROWS * (IMAGE_SIZE + PREVIEW_MARGIN)),PREVIEW_MARGIN + (PREVIEW_COLS * (IMAGE_SIZE + PREVIEW_MARGIN)), 3),255, dtype=np.uint8)
     
     generated_images = generator.predict(noise)
     generated_images = 0.5 * generated_images + 0.5
